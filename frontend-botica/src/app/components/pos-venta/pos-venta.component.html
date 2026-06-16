@@ -134,7 +134,7 @@
 
     <div class="mb-2">
       <small><strong>Fecha:</strong> {{ ticketActual.fecha | date:'dd/MM/yyyy HH:mm' }}</small><br>
-      <small><strong>Cajero:</strong> ADMIN</small><br>
+      <small><strong>Cajero:</strong> {{ ticketActual.cajero | uppercase }}</small><br>
       <small><strong>Pago:</strong> {{ ticketActual.metodoPago }}</small>
     </div>
 

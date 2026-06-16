@@ -1,0 +1,30 @@
+<aside class="sidebar-container">
+  <div class="brand-logo">
+    <div class="logo-circle">
+      <!-- Ícono de cápsulas/pastillas -->
+      <i class="fa-solid fa-capsules"></i>
+    </div>
+    <span class="brand-text">Mi Botica</span>
+  </div>
+
+  <nav class="sidebar-menu">
+    <!-- Menú principal -->
+    <a href="dashboard" class="menu-item active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+    <a href="usuarios" class="menu-item"><i class="fa-solid fa-users"></i> Usuarios</a>
+    <a href="productos" class="menu-item"><i class="fa-solid fa-pills"></i> Productos</a>
+    <a href="inventario" class="menu-item"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+    <a href="compras/nueva" class="menu-item"><i class="fa-solid fa-cart-shopping"></i> Compras</a>
+    <a href="caja" class="menu-item"><i class="fa-solid fa-cash-register"></i> Ventas</a>
+    <a href="arqueo" class="menu-item"><i class="fa-solid fa-calculator"></i> Arqueo</a>
+    <a href="proveedores" class="menu-item"><i class="fa-solid fa-truck"></i> Proveedores</a>
+    <a href="devoluciones" class="menu-item"><i class="fa-solid fa-arrow-rotate-left"></i> Devolución Cliente</a>
+    <a href="salida-proveedor" class="menu-item"><i class="fa-solid fa-truck-arrow-right"></i> Devolución Proveedor</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <!-- Cambiamos href por el evento (click) -->
+    <a (click)="cerrarSesion()" class="menu-item" style="cursor: pointer;">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión
+    </a>
+  </div>
+</aside>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+// 1. IMPORTAMOS EL SERVICIO DE VOZ (Ajusta la ruta según tu estructura de carpetas)
+import { VozService } from '../../services/voz.service'; 
 
 @Component({
   selector: 'app-pos-venta',
@@ -18,23 +20,27 @@ export class PosVentaComponent implements OnInit {
   lotesDisponibles: any[] = [];
   categoriasUnicas: string[] = [];
   ticketActual: any = null;
-  
+  nombreCajero: string = '';
   // Filtros
   categoriaSeleccionada: string = 'TODAS';
   terminoBusqueda: string = '';
 
   carrito: any[] = [];
   venta = {
-    usuarioId: 1, 
     nroComprobante: 'B001-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0'),
     metodoPago: 'Efectivo',
     total: 0
   };
 
-  constructor(private http: HttpClient) {}
+  // 2. INYECTAMOS EL SERVICIO EN EL CONSTRUCTOR
+  constructor(
+    private http: HttpClient,
+    private vozService: VozService 
+  ) {}
 
   ngOnInit(): void {
     this.cargarLotes();
+    this.nombreCajero = localStorage.getItem('usuario_nombre') || 'Cajero Desconocido';
   }
 
   cargarLotes() {
@@ -61,7 +67,10 @@ export class PosVentaComponent implements OnInit {
 
     if (itemExistente) {
       if ((itemExistente.cantidad + 1) > lote.cantidadActual) {
-        alert(`Stock físico insuficiente. Solo hay ${lote.cantidadActual} cajas.`);
+        // 3. OPCIONAL: HACEMOS QUE EL SISTEMA AVISE EN VOZ ALTA SI FALTA STOCK
+        const mensajeAlerta = `Stock físico insuficiente. Solo hay ${lote.cantidadActual} cajas.`;
+        this.vozService.hablar(mensajeAlerta);
+        alert(mensajeAlerta);
         return;
       }
       itemExistente.cantidad++;
@@ -109,10 +118,14 @@ export class PosVentaComponent implements OnInit {
   }
 
   registrarVenta() {
-    if (this.carrito.length === 0) return alert('El carrito está vacío.');
-
+    if (this.carrito.length === 0) {
+      this.vozService.hablar('El carrito está vacío.');
+      return alert('El carrito está vacío.');
+    }
+    
+    const idUsuarioLogueado = Number(localStorage.getItem('usuario_id'));
     const payload = {
-      usuarioId: this.venta.usuarioId,
+      usuarioId: idUsuarioLogueado,
       nroComprobante: this.venta.nroComprobante,
       metodoPago: this.venta.metodoPago,
       total: this.venta.total,
@@ -133,8 +146,13 @@ export class PosVentaComponent implements OnInit {
           fecha: new Date(),
           metodoPago: this.venta.metodoPago,
           total: this.venta.total,
-          items: [...this.carrito] // Hacemos una copia exacta del carrito
+          items: [...this.carrito], // Hacemos una copia exacta del carrito
+          cajero: this.nombreCajero
         };
+
+        // 4. LECTURA EN VOZ ALTA DEL ÉXITO DE LA VENTA Y EL TOTAL A COBRAR
+        const mensajeVoz = `Venta registrada con éxito. El total a cobrar es de ${this.venta.total} soles.`;
+        this.vozService.hablar(mensajeVoz);
 
         // 2. Limpiamos la pantalla de la caja para el siguiente cliente en la fila
         this.carrito = [];
@@ -142,7 +160,10 @@ export class PosVentaComponent implements OnInit {
         this.venta.nroComprobante = 'B001-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
         this.cargarLotes(); // Refrescamos el stock
       },
-      error: (err) => alert('Error al registrar venta.')
+      error: (err) => {
+        this.vozService.hablar('Error al registrar la venta.');
+        alert('Error al registrar venta.');
+      }
     });
   }
 

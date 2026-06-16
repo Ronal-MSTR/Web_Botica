@@ -7,6 +7,10 @@ import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+
     // Esto servirá para validar que no existan correos duplicados
     Optional<Usuario> findByEmail(String email);
+
+    // NUEVO: Esto sirve para el Dashboard (Cuenta cuántos usuarios tienen activo = true)
+    Long countByActivo(Boolean activo);
 }

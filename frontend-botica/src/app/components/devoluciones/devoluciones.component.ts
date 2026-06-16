@@ -10,16 +10,17 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './devoluciones.component.html'
 })
 export class DevolucionesComponent {
-  // Variables del buscador
   nroComprobante: string = '';
   ventaEncontrada: any = null;
   detallesVenta: any[] = [];
   mensajeError: string = '';
 
-  // Variables para procesar la devolución
   detalleSeleccionado: any = null;
   cantidadDevolver: number = 1;
   motivoDevolucion: string = '';
+
+  // NUEVO: Historial visual nativo
+  historialDevoluciones: any[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -31,7 +32,7 @@ export class DevolucionesComponent {
 
     if (!this.nroComprobante.trim()) return;
 
-    this.http.get<any>(`http://localhost:8080/api/ventas/buscar/${this.nroComprobante}`).subscribe({
+    this.http.get<any>(`http://localhost:8080/api/ventas/buscar/${this.nroComprobante.trim()}`).subscribe({
       next: (data) => {
         this.ventaEncontrada = data.venta;
         this.detallesVenta = data.detalles;
@@ -58,19 +59,40 @@ export class DevolucionesComponent {
       return;
     }
 
+    // Extraemos el ID de la memoria
+    const idLogueado = Number(localStorage.getItem('usuario_id'));
+
     const payload = {
-      ventaId: this.ventaEncontrada.venta_id,
-      loteId: this.detalleSeleccionado.lote.lote_id,
-      usuarioId: 1, // ID del Administrador (luego lo ataremos al login)
+      ventaId: this.ventaEncontrada.venta_id || this.ventaEncontrada.ventaId,
+      loteId: this.detalleSeleccionado.lote.lote_id || this.detalleSeleccionado.lote.loteId,
+      usuarioId: idLogueado, 
       cantidad: this.cantidadDevolver,
       motivo: this.motivoDevolucion
     };
 
     this.http.post('http://localhost:8080/api/devoluciones/procesar', payload).subscribe({
       next: () => {
-        alert('¡ÉXITO! La devolución se procesó correctamente. El dinero se restó de caja y el stock regresó al estante.');
-        this.detalleSeleccionado = null; 
-        this.buscarTicket(); // Volvemos a buscar el ticket para refrescar la vista
+        // 1. Calcular dinero devuelto para el historial
+        const precioUnitario = this.detalleSeleccionado.precioUnitario || this.detalleSeleccionado.precio_unitario;
+        const totalReembolso = this.cantidadDevolver * precioUnitario;
+
+        // 2. Guardar en el historial visual
+        this.historialDevoluciones.unshift({
+          ticket: this.ventaEncontrada.nroComprobante || this.ventaEncontrada.nro_comprobante,
+          producto: this.detalleSeleccionado.lote.producto?.nombreGenerico || this.detalleSeleccionado.lote.producto?.nombre_generico,
+          cantidad: this.cantidadDevolver,
+          monto: totalReembolso,
+          hora: new Date()
+        });
+
+        // 3. Limpieza total (Reset)
+        this.ventaEncontrada = null;
+        this.detallesVenta = [];
+        this.detalleSeleccionado = null;
+        this.nroComprobante = ''; // Vaciamos el buscador
+
+        // 4. Notificación
+        alert('¡ÉXITO! La devolución se procesó correctamente. El dinero se restó de la caja y el stock regresó al estante.');
       },
       error: (err) => {
         alert('Hubo un error al procesar la devolución.');

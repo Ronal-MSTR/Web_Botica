@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow-lg border-0" style="width: 100%; max-width: 400px; border-radius: 1rem;">
+    
+    <div class="card-header bg-dark text-white text-center py-4 border-0" style="border-radius: 1rem 1rem 0 0;">
+      <h3 class="mb-0 fw-bold"><i class="bi bi-capsule text-success"></i> Mi Botica</h3>
+      <p class="mb-0 text-secondary"><small>Acceso al Sistema</small></p>
+    </div>
+
+    <div class="card-body p-4">
+      <div *ngIf="mensajeError" class="alert alert-danger fw-bold text-center p-2 mb-4">
+        <i class="bi bi-exclamation-triangle"></i> {{ mensajeError }}
+      </div>
+
+      <form (ngSubmit)="hacerLogin()">
+        
+        <div class="mb-3">
+          <label class="form-label fw-bold text-secondary">Correo Electrónico</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-person"></i></span>
+            <input type="email" class="form-control" placeholder="ejemplo@botica.com" 
+                   [(ngModel)]="email" name="email" required>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-bold text-secondary">Contraseña</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-lock"></i></span>
+            <input type="password" class="form-control" placeholder="••••••••" 
+                   [(ngModel)]="password" name="password" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 fw-bold py-2 shadow-sm" [disabled]="cargando">
+          <span *ngIf="!cargando">INGRESAR</span>
+          <span *ngIf="cargando" class="spinner-border spinner-border-sm"></span>
+        </button>
+        
+      </form>
+    </div>
+  </div>
+</div>

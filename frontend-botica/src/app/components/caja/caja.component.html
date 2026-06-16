@@ -89,7 +89,7 @@
                     </span>
                   </td>
                   <td>{{ mov.descripcion }}</td>
-                  <td><small class="text-muted">{{ mov.usuario.nombreCompleto || 'Cajero' }}</small></td>
+                  <td><small class="text-muted">{{ mov.usuario.nombre_completo || 'Cajero' }}</small></td>
                   <td class="text-end fw-bold" 
                       [ngClass]="{'text-success': mov.tipoMovimiento.tipo_mov_id <= 2, 'text-danger': mov.tipoMovimiento.tipo_mov_id > 2}">
                     {{ mov.tipoMovimiento.tipo_mov_id <= 2 ? '+' : '-' }}{{ mov.monto | currency:'PEN':'S/. ' }}

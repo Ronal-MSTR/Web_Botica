@@ -19,7 +19,8 @@ export class CajaComponent implements OnInit {
     tipoMovId: 1, // Por defecto: 1 (APERTURA)
     monto: null,
     descripcion: '',
-    usuarioId: 1 // Por ahora, asumimos que es el ADMIN (ID 1)
+    // Lo dejamos en 0 porque se llenará automáticamente al hacer clic en guardar
+    usuarioId: 0
   };
 
   constructor(private http: HttpClient) {}
@@ -52,6 +53,11 @@ export class CajaComponent implements OnInit {
       alert('La descripción es obligatoria.');
       return;
     }
+
+    // --- ¡ESTA ES LA LÍNEA NUEVA! ---
+    // Atrapamos el ID del usuario de la memoria y lo reemplazamos
+    this.nuevoMovimiento.usuarioId = Number(localStorage.getItem('usuario_id'));
+    // --------------------------------
 
     this.http.post('http://localhost:8080/api/caja/registrar', this.nuevoMovimiento).subscribe({
       next: () => {

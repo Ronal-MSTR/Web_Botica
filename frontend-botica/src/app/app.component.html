@@ -1,2 +1,52 @@
 
-<router-outlet></router-outlet>
+<!-- Solo mostramos el layout si NO es la pantalla de login -->
+<div class="app-global-layout" *ngIf="!esPantallaLogin()">
+  
+  <!-- NUESTRO NUEVO COMPONENTE LATERAL -->
+  <app-sidebar></app-sidebar>
+
+  <!-- CONTENEDOR DERECHO (Navbar + Contenido de las pantallas) -->
+  <div class="main-wrapper">
+    
+    <!-- NAVBAR SUPERIOR (Adaptado al diseño de la imagen) -->
+    <header class="top-navbar">
+      <div class="search-container">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Search your query">
+      </div>
+
+      <div class="user-actions">
+        <button class="notification-btn">
+          <i class="bi bi-bell-fill"></i>
+          <span class="badge"></span>
+        </button>
+        
+        <!-- Tu dropdown de usuario adaptado -->
+        <div class="dropdown ms-3">
+          <button class="btn profile-btn dropdown-toggle border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://ui-avatars.com/api/?name={{ obtenerNombreUsuario() }}&background=random" alt="User" class="profile-avatar">
+            <span class="fw-bold ms-2">{{ obtenerNombreUsuario() }}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+            <li><a class="dropdown-item text-secondary" href="#"><i class="bi bi-person me-2"></i>Mi Perfil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <button class="dropdown-item text-danger fw-bold" (click)="cerrarSesion()">
+                <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <!-- ÁREA DONDE CARGAN LOS COMPONENTES (Dashboard, Caja, etc.) -->
+    <main class="content-scroll-area">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>
+
+<!-- Si es login, solo carga el login a pantalla completa -->
+<router-outlet *ngIf="esPantallaLogin()"></router-outlet>

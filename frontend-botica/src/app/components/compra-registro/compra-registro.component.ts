@@ -98,10 +98,12 @@ export class CompraRegistroComponent implements OnInit {
       return;
     }
 
+    // ¡NUEVA LÍNEA! Extraemos el ID
+    const idAdminLogueado = Number(localStorage.getItem('usuario_id'));
     // Armamos el Payload (El DTO final estricto que Java espera, sin campos extra visuales)
     const payload = {
       proveedorId: this.compra.proveedorId,
-      usuarioId: this.compra.usuarioId,
+      usuarioId: idAdminLogueado,
       nroFactura: this.compra.nroFactura,
       montoTotal: this.compra.montoTotal,
       detalles: this.compra.detalles.map(d => ({

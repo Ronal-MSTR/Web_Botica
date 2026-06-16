@@ -1,0 +1,107 @@
+<div class="container-fluid mt-4 mb-5" style="max-width: 900px;">
+  <h2 class="mb-4 fw-bold text-warning text-darken-2"><i class="bi bi-truck"></i> Salida a Proveedores</h2>
+
+  <div class="card shadow-sm mb-4 border-warning">
+    <div class="card-body bg-light">
+      <label class="form-label fw-bold">Número de Factura del Proveedor</label>
+      <div class="input-group input-group-lg shadow-sm">
+        <span class="input-group-text bg-white">📄</span>
+        <input type="text" class="form-control border-start-0" 
+               placeholder="Ej: F001-998877" 
+               [(ngModel)]="nroFactura"
+               (keyup.enter)="buscarFactura()">
+        <button class="btn btn-warning fw-bold px-4 text-dark" (click)="buscarFactura()">BUSCAR COMPRA</button>
+      </div>
+      <small class="text-danger mt-2 fw-bold d-block" *ngIf="mensajeError">{{ mensajeError }}</small>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4 border-0" *ngIf="compraEncontrada">
+    <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+      <h6 class="mb-0 fw-bold">Proveedor: {{ compraEncontrada.proveedor?.razonSocial || compraEncontrada.proveedor?.razon_social }} (Factura: {{ compraEncontrada.nroFactura || compraEncontrada.nro_factura }})</h6>
+      <span class="badge bg-dark">{{ compraEncontrada.fechaCompra || compraEncontrada.fecha_compra | date:'dd/MM/yyyy' }}</span>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th class="ps-3">Producto</th>
+            <th class="text-center">Comprado</th>
+            <th>Costo Unit.</th>
+            <th class="text-end pe-3">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let det of detallesCompra">
+            <td class="ps-3 fw-bold text-secondary">{{ det.producto?.nombreGenerico || det.producto?.nombre_generico }}</td>
+            <td class="text-center"><span class="badge bg-secondary fs-6">{{ det.cantidadComprada || det.cantidad_comprada }} u.</span></td>
+            <td>{{ det.precioCompraUnitario || det.precio_compra_unitario | currency:'PEN':'S/. ' }}</td>
+            <td class="text-end pe-3">
+              <button class="btn btn-outline-warning text-dark fw-bold btn-sm" (click)="prepararDevolucion(det)">
+                📦 Preparar Salida
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card border-warning shadow-lg mt-4" *ngIf="detalleSeleccionado">
+    <div class="card-header bg-dark text-warning fw-bold fs-5">
+      📋 Confirmar Despacho al Transportista
+    </div>
+    <div class="card-body bg-white">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Cant. a Devolver</label>
+          <input type="number" class="form-control form-control-lg text-center border-warning" 
+                 [(ngModel)]="cantidadDevolver" min="1" [max]="detalleSeleccionado.cantidad_comprada">
+        </div>
+        <div class="col-md-5">
+          <label class="form-label fw-bold">Motivo</label>
+          <input type="text" class="form-control form-control-lg" 
+                 [(ngModel)]="motivoDevolucion" placeholder="Ej: Lote dañado, Vencimiento">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-bold text-danger">Nro. Guía de Salida *</label>
+          <input type="text" class="form-control form-control-lg border-danger" 
+                 [(ngModel)]="nroGuiaSalida" placeholder="Ej: T001-5544">
+        </div>
+      </div>
+    </div>
+    <div class="card-footer bg-light d-flex justify-content-end gap-3 py-3">
+      <button class="btn btn-outline-secondary btn-lg fw-bold" (click)="detalleSeleccionado = null">Cancelar</button>
+      <button class="btn btn-warning btn-lg fw-bold px-5 text-dark shadow-sm" (click)="procesarDevolucion()">CONFIRMAR DESPACHO</button>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mt-5 border-0" *ngIf="historialDespachos.length > 0">
+    <div class="card-header bg-white border-bottom border-warning d-flex justify-content-between align-items-center">
+      <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-clock-history"></i> Despachos Recientes en esta Sesión</h6>
+      <span class="badge bg-warning text-dark">{{ historialDespachos.length }} despachos</span>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-sm table-striped align-middle mb-0">
+        <thead class="table-light text-muted">
+          <tr>
+            <th class="ps-3">Hora</th>
+            <th>Guía de Salida</th>
+            <th>Proveedor</th>
+            <th>Producto Devuelto</th>
+            <th class="text-center pe-3">Cant.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hist of historialDespachos">
+            <td class="ps-3"><small>{{ hist.hora | date:'HH:mm' }}</small></td>
+            <td class="fw-bold text-danger">{{ hist.guia }}</td>
+            <td>{{ hist.proveedor }}</td>
+            <td class="text-primary">{{ hist.producto }}</td>
+            <td class="text-center pe-3"><span class="badge bg-dark">{{ hist.cantidad }} u.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

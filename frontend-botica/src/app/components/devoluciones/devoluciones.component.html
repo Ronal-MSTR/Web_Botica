@@ -80,4 +80,33 @@
       <button class="btn btn-danger btn-lg fw-bold px-5" (click)="procesarDevolucion()">CONFIRMAR REEMBOLSO</button>
     </div>
   </div>
+
+  <div class="card shadow-sm mt-5 border-0" *ngIf="historialDevoluciones.length > 0">
+    <div class="card-header bg-white border-bottom border-danger d-flex justify-content-between align-items-center">
+      <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-clock-history"></i> Reembolsos Recientes en esta Sesión</h6>
+      <span class="badge bg-danger text-white">{{ historialDevoluciones.length }} operaciones</span>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-sm table-striped align-middle mb-0">
+        <thead class="table-light text-muted">
+          <tr>
+            <th class="ps-3">Hora</th>
+            <th>Comprobante</th>
+            <th>Producto Devuelto</th>
+            <th class="text-center">Cant.</th>
+            <th class="text-end pe-3">Reembolsado (Egreso)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hist of historialDevoluciones">
+            <td class="ps-3"><small>{{ hist.hora | date:'HH:mm' }}</small></td>
+            <td class="fw-bold text-secondary">{{ hist.ticket }}</td>
+            <td class="text-primary fw-bold">{{ hist.producto }}</td>
+            <td class="text-center"><span class="badge bg-dark">{{ hist.cantidad }} u.</span></td>
+            <td class="text-end pe-3 fw-bold text-danger">-{{ hist.monto | currency:'PEN':'S/. ' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

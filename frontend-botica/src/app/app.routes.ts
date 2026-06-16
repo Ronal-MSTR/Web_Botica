@@ -10,22 +10,41 @@ import { InventarioLotesComponent } from './components/inventario-lotes/inventar
 import { PosVentaComponent } from './components/pos-venta/pos-venta.component';
 import { CajaComponent } from './components/caja/caja.component';
 import { DevolucionesComponent } from './components/devoluciones/devoluciones.component';
+import { DevolucionProveedorComponent } from './components/devolucion-proveedor/devolucion-proveedor.component';
+import { LoginComponent } from './components/login/login.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
-  { path: 'usuarios', component: UsuarioListaComponent },
-  { path: 'registro', component: RegistroComponent },
-  { path: 'editar/:id', component: RegistroComponent },
-  { path: 'productos', component: ProductoListaComponent },
-  { path: 'productos/nuevo', component: ProductoRegistroComponent },
-  { path: 'productos/editar/:id', component: ProductoRegistroComponent },
-  { path: 'proveedores', component: ProveedorListaComponent },
-  { path: 'proveedores/nuevo', component: ProveedorRegistroComponent },
-  { path: 'proveedores/editar/:id', component: ProveedorRegistroComponent },
-  { path: 'compras/nueva', component: CompraRegistroComponent },
-  { path: 'inventario', component: InventarioLotesComponent },
-  { path: 'caja', component: PosVentaComponent },
-  { path: 'arqueo', component: CajaComponent },
-  { path: 'devoluciones', component: DevolucionesComponent },
+  { path: 'login', component: LoginComponent },
 
-  { path: '', redirectTo: '/caja', pathMatch: 'full' } // Cambiamos el inicio para ver los productos primero ahora
+  // ==========================================
+  // ZONA DE ADMINISTRADOR (Gerencia y Control)
+  // ==========================================
+  { path: 'dashboard', component: DashboardComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'usuarios', component: UsuarioListaComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'registro', component: RegistroComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'editar/:id', component: RegistroComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'productos', component: ProductoListaComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'productos/nuevo', component: ProductoRegistroComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'productos/editar/:id', component: ProductoRegistroComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'proveedores', component: ProveedorListaComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'proveedores/nuevo', component: ProveedorRegistroComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'proveedores/editar/:id', component: ProveedorRegistroComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'compras/nueva', component: CompraRegistroComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'inventario', component: InventarioLotesComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+  { path: 'salida-proveedor', component: DevolucionProveedorComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN'] } },
+
+  // ==========================================
+  // ZONA DE VENDEDOR (Operación Diaria)
+  // ==========================================
+// ¡CORREGIDO! El Arqueo ahora lo pueden ver tanto el ADMIN como el VENDEDOR
+  { path: 'arqueo', component: CajaComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN', 'VENDEDOR'] } },
+  // Zonas exclusivas o principales del vendedor
+  { path: 'caja', component: PosVentaComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN', 'VENDEDOR'] } }, // (Opcional: puedes dejar que el Admin también venda si quieres)
+  { path: 'devoluciones', component: DevolucionesComponent, canActivate: [roleGuard], data: { rolesPermitidos: ['ADMIN', 'VENDEDOR'] } },
+  
+  // Redirecciones por defecto y rutas inválidas
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' } 
 ];
