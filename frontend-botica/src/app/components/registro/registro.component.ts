@@ -42,7 +42,7 @@ export class RegistroComponent implements OnInit {
   // Si es edición, buscamos los datos actuales del usuario para llenar el formulario
   cargarUsuario(id: number) {
     // Usamos el endpoint de listar para buscar al usuario específico (luego podemos optimizar esto)
-    this.http.get<any[]>('http://localhost:8080/api/usuarios/listar').subscribe(usuarios => {
+    this.http.get<any[]>('https://web-botica.onrender.com/api/usuarios/listar').subscribe(usuarios => {
       const userFound = usuarios.find(u => u.usuario_id === id);
       if (userFound) {
         this.usuario.nombre_completo = userFound.nombre_completo;
@@ -57,14 +57,14 @@ export class RegistroComponent implements OnInit {
   registrar() {
     if (this.esEdicion) {
       // Si estamos editando, enviamos los datos al endpoint @PutMapping de Java
-      this.http.put(`http://localhost:8080/api/usuarios/actualizar/${this.usuarioId}`, this.usuario)
+      this.http.put(`https://web-botica.onrender.com/api/usuarios/actualizar/${this.usuarioId}`, this.usuario)
         .subscribe(() => {
           alert('¡Usuario actualizado con éxito!');
           this.router.navigate(['/usuarios']); // Nos regresa automáticamente a la tabla
         });
     } else {
       // Si no es edición, se comporta exactamente como antes (Crea un nuevo registro)
-      this.http.post('http://localhost:8080/api/usuarios/registro', this.usuario)
+      this.http.post('https://web-botica.onrender.com/api/usuarios/registro', this.usuario)
         .subscribe(() => {
           alert('¡Usuario registrado con éxito!');
           this.router.navigate(['/usuarios']);

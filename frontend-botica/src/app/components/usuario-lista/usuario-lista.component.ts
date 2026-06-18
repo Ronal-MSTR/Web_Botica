@@ -19,7 +19,7 @@ export class UsuarioListaComponent implements OnInit {
   }
 
   obtenerUsuarios() {
-    this.http.get<any[]>('http://localhost:8080/api/usuarios/listar')
+    this.http.get<any[]>('https://web-botica.onrender.com/api/usuarios/listar')
       .subscribe(data => {
         this.usuarios = data;
       });
@@ -27,7 +27,7 @@ export class UsuarioListaComponent implements OnInit {
 
   darDeBaja(id: number) {
   if (confirm('¿Estás seguro de que deseas dar de baja a este empleado?')) {
-    this.http.patch(`http://localhost:8080/api/usuarios/desactivar/${id}`, {})
+    this.http.patch(`https://web-botica.onrender.com/api/usuarios/desactivar/${id}`, {})
       .subscribe(() => {
         alert('Empleado desactivado con éxito');
         this.obtenerUsuarios(); // Volvemos a cargar la lista para ver el cambio en vivo
@@ -38,7 +38,7 @@ export class UsuarioListaComponent implements OnInit {
 // Método para volver a activar a un empleado
   activar(id: number) {
   if (confirm('¿Estás seguro de que deseas reactivar a este empleado?')) {
-    this.http.patch(`http://localhost:8080/api/usuarios/activar/${id}`, {})
+    this.http.patch(`https://web-botica.onrender.com/api/usuarios/activar/${id}`, {})
       .subscribe(() => {
         alert('Empleado reactivado con éxito');
         this.obtenerUsuarios(); // Refrescamos la tabla para ver el cambio en vivo

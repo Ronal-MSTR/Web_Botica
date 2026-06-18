@@ -31,12 +31,12 @@ export class CajaComponent implements OnInit {
 
   cargarDatosCaja() {
     // 1. Traer los totales calculados
-    this.http.get<any>('http://localhost:8080/api/caja/resumen').subscribe(data => {
+    this.http.get<any>('https://web-botica.onrender.com/api/caja/resumen').subscribe(data => {
       this.resumen = data;
     });
 
     // 2. Traer el historial de la tabla (Ventas, Gastos, etc.)
-    this.http.get<any[]>('http://localhost:8080/api/caja/movimientos').subscribe(data => {
+    this.http.get<any[]>('https://web-botica.onrender.com/api/caja/movimientos').subscribe(data => {
       // Ordenamos para que los más recientes salgan arriba
       this.movimientos = data.sort((a, b) => 
         new Date(b.fechaMovimiento).getTime() - new Date(a.fechaMovimiento).getTime()
@@ -59,7 +59,7 @@ export class CajaComponent implements OnInit {
     this.nuevoMovimiento.usuarioId = Number(localStorage.getItem('usuario_id'));
     // --------------------------------
 
-    this.http.post('http://localhost:8080/api/caja/registrar', this.nuevoMovimiento).subscribe({
+    this.http.post('https://web-botica.onrender.com/api/caja/registrar', this.nuevoMovimiento).subscribe({
       next: () => {
         alert('Movimiento registrado con éxito en el libro contable.');
         this.cargarDatosCaja(); // Refrescar los números y la tabla

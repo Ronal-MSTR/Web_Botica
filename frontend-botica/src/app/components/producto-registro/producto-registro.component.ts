@@ -45,12 +45,12 @@ export class ProductoRegistroComponent implements OnInit {
   }
 
   cargarCategorias() {
-    this.http.get<any[]>('http://localhost:8080/api/categorias/listar')
+    this.http.get<any[]>('https://web-botica.onrender.com/api/categorias/listar')
       .subscribe(data => this.categorias = data);
   }
 
   cargarProducto(id: number) {
-    this.http.get<any[]>('http://localhost:8080/api/productos/listar').subscribe(productos => {
+    this.http.get<any[]>('https://web-botica.onrender.com/api/productos/listar').subscribe(productos => {
       const prodFound = productos.find(p => p.producto_id === id);
       if (prodFound) {
         this.producto = prodFound; // Rellena el formulario con los datos
@@ -61,7 +61,7 @@ export class ProductoRegistroComponent implements OnInit {
   registrarProducto() {
     if (this.esEdicion) {
       // Método PUT para actualizar
-      this.http.put(`http://localhost:8080/api/productos/actualizar/${this.productoId}`, this.producto)
+      this.http.put(`https://web-botica.onrender.com/api/productos/actualizar/${this.productoId}`, this.producto)
         .subscribe({
           next: () => {
             alert('¡Medicamento actualizado con éxito!');
@@ -71,7 +71,7 @@ export class ProductoRegistroComponent implements OnInit {
         });
     } else {
       // Método POST para registrar nuevo (se queda igual)
-      this.http.post('http://localhost:8080/api/productos/registro', this.producto)
+      this.http.post('https://web-botica.onrender.com/api/productos/registro', this.producto)
         .subscribe({
           next: () => {
             alert('¡Medicamento registrado con éxito!');

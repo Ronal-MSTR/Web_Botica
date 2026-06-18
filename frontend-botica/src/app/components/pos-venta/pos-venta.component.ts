@@ -44,7 +44,7 @@ export class PosVentaComponent implements OnInit {
   }
 
   cargarLotes() {
-    this.http.get<any[]>('http://localhost:8080/api/lotes/listar').subscribe(data => {
+    this.http.get<any[]>('https://web-botica.onrender.com/api/lotes/listar').subscribe(data => {
       this.lotesDisponibles = data.filter(lote => lote.cantidadActual > 0);
       
       // Extraer categorías sin repetir para el menú lateral
@@ -136,7 +136,7 @@ export class PosVentaComponent implements OnInit {
       }))
     };
 
-    this.http.post('http://localhost:8080/api/ventas/registrar', payload).subscribe({
+    this.http.post('https://web-botica.onrender.com/api/ventas/registrar', payload).subscribe({
       next: () => {
         // 1. CAPTURAMOS LOS DATOS PARA EL TICKET (Antes de borrar el carrito)
         this.ticketActual = {

@@ -20,7 +20,7 @@ export class ProductoListaComponent implements OnInit {
   }
 
   obtenerProductos() {
-    this.http.get<any[]>('http://localhost:8080/api/productos/listar')
+    this.http.get<any[]>('https://web-botica.onrender.com/api/productos/listar')
       .subscribe({
         next: (data) => {
           this.productos = data;
@@ -33,7 +33,7 @@ export class ProductoListaComponent implements OnInit {
 
   eliminar(id: number) {
     if (confirm('¿Estás seguro de que deseas eliminar este medicamento del catálogo?')) {
-      this.http.delete(`http://localhost:8080/api/productos/eliminar/${id}`)
+      this.http.delete(`https://web-botica.onrender.com/api/productos/eliminar/${id}`)
         .subscribe({
           next: () => {
             alert('Producto eliminado correctamente.');

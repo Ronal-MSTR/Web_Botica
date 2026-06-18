@@ -33,7 +33,7 @@ export class LoginComponent {
       password: this.password
     };
 
-    this.http.post<any>('http://localhost:8080/api/auth/login', credenciales).subscribe({
+    this.http.post<any>('https://web-botica.onrender.com/api/auth/login', credenciales).subscribe({
       next: (response) => {
         this.cargando = false;
         

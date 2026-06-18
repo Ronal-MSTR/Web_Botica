@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DevolucionService {
-  private apiUrl = 'http://localhost:8080/api/devoluciones';
+  private apiUrl = 'https://web-botica.onrender.com/api/devoluciones';
 
   constructor(private http: HttpClient) { }
 

@@ -32,7 +32,7 @@ export class DevolucionesComponent {
 
     if (!this.nroComprobante.trim()) return;
 
-    this.http.get<any>(`http://localhost:8080/api/ventas/buscar/${this.nroComprobante.trim()}`).subscribe({
+    this.http.get<any>(`https://web-botica.onrender.com/api/ventas/buscar/${this.nroComprobante.trim()}`).subscribe({
       next: (data) => {
         this.ventaEncontrada = data.venta;
         this.detallesVenta = data.detalles;
@@ -70,7 +70,7 @@ export class DevolucionesComponent {
       motivo: this.motivoDevolucion
     };
 
-    this.http.post('http://localhost:8080/api/devoluciones/procesar', payload).subscribe({
+    this.http.post('https://web-botica.onrender.com/api/devoluciones/procesar', payload).subscribe({
       next: () => {
         // 1. Calcular dinero devuelto para el historial
         const precioUnitario = this.detalleSeleccionado.precioUnitario || this.detalleSeleccionado.precio_unitario;

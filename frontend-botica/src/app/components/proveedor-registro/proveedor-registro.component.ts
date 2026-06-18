@@ -42,7 +42,7 @@ export class ProveedorRegistroComponent implements OnInit {
 
   // Si estamos editando, buscamos los datos para llenar el formulario
   cargarProveedor(id: number) {
-    this.http.get<any[]>('http://localhost:8080/api/proveedores/listar').subscribe(proveedores => {
+    this.http.get<any[]>('https://web-botica.onrender.com/api/proveedores/listar').subscribe(proveedores => {
       const provFound = proveedores.find(p => p.proveedor_id === id);
       if (provFound) {
         this.proveedor = provFound;
@@ -53,7 +53,7 @@ export class ProveedorRegistroComponent implements OnInit {
   // Método unificado para Guardar (Crea o Actualiza según corresponda)
   guardarProveedor() {
     if (this.esEdicion) {
-      this.http.put(`http://localhost:8080/api/proveedores/actualizar/${this.proveedorId}`, this.proveedor)
+      this.http.put(`https://web-botica.onrender.com/api/proveedores/actualizar/${this.proveedorId}`, this.proveedor)
         .subscribe({
           next: () => {
             alert('¡Proveedor actualizado con éxito!');
@@ -62,7 +62,7 @@ export class ProveedorRegistroComponent implements OnInit {
           error: (err) => console.error('Error al actualizar', err)
         });
     } else {
-      this.http.post('http://localhost:8080/api/proveedores/registro', this.proveedor)
+      this.http.post('https://web-botica.onrender.com/api/proveedores/registro', this.proveedor)
         .subscribe({
           next: () => {
             alert('¡Proveedor registrado con éxito!');

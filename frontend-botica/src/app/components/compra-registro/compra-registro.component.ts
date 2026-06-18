@@ -39,14 +39,14 @@ export class CompraRegistroComponent implements OnInit {
   }
 
   cargarProveedores() {
-    this.http.get<any[]>('http://localhost:8080/api/proveedores/listar').subscribe(data => {
+    this.http.get<any[]>('https://web-botica.onrender.com/api/proveedores/listar').subscribe(data => {
       // Filtramos para mostrar solo los proveedores que están activos
       this.proveedores = data.filter(p => p.activo === true);
     });
   }
 
   cargarProductos() {
-    this.http.get<any[]>('http://localhost:8080/api/productos/listar').subscribe(data => {
+    this.http.get<any[]>('https://web-botica.onrender.com/api/productos/listar').subscribe(data => {
       this.productos = data;
     });
   }
@@ -114,7 +114,7 @@ export class CompraRegistroComponent implements OnInit {
       }))
     };
 
-    this.http.post('http://localhost:8080/api/compras/registrar', payload)
+    this.http.post('https://web-botica.onrender.com/api/compras/registrar', payload)
       .subscribe({
         next: () => {
           alert('¡Factura registrada! Los lotes físicos ya ingresaron al inventario.');

@@ -19,7 +19,7 @@ export class InventarioLotesComponent implements OnInit {
   }
 
   obtenerLotes() {
-    this.http.get<any[]>('http://localhost:8080/api/lotes/listar')
+    this.http.get<any[]>('https://web-botica.onrender.com/api/lotes/listar')
       .subscribe({
         next: (data) => {
           // Procesamos los datos antes de guardarlos para calcular sus días restantes

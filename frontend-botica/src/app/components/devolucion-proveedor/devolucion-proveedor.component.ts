@@ -37,7 +37,7 @@ export class DevolucionProveedorComponent implements OnInit {
 
     const facturaLimpia = this.nroFactura.trim();
 
-    this.http.get<any>(`http://localhost:8080/api/compras/buscar/${facturaLimpia}`).subscribe({
+    this.http.get<any>(`https://web-botica.onrender.com/api/compras/buscar/${facturaLimpia}`).subscribe({
       next: (data) => {
         this.compraEncontrada = data.compra;
         this.detallesCompra = data.detalles;
@@ -80,7 +80,7 @@ export class DevolucionProveedorComponent implements OnInit {
       nroGuiaSalida: this.nroGuiaSalida
     };
 
-    this.http.post('http://localhost:8080/api/devoluciones-proveedor/procesar', payload).subscribe({
+    this.http.post('https://web-botica.onrender.com/api/devoluciones-proveedor/procesar', payload).subscribe({
       next: () => {
         // 1. Guardar en el historial visual
         this.historialDespachos.unshift({

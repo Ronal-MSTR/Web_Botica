@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DashboardService {
-  private apiUrl = 'http://localhost:8080/api/dashboard/resumen';
+  private apiUrl = 'https://web-botica.onrender.com/api/dashboard/resumen';
 
   constructor(private http: HttpClient) {}
 
