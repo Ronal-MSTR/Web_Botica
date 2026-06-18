@@ -33,7 +33,7 @@ public class SecurityConfig {
             // 1. Configurar CORS (Permitir a Angular conectarse sin bloqueos)
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(List.of("http://localhost:4200"));
+                config.setAllowedOrigins(List.of("http://localhost:4200", "https://boticaperu-gules.vercel.app"));
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("*"));
                 return config;
